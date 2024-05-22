@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Application } from '../entities/application.entity';
+import { CreateApplicationDto } from './dto/create-application.dto';
+import { UpdateApplicationDto } from './dto/update-application.dto';
+import { Application } from 'src/entities/application.entity';
 
 @Injectable()
 export class ApplicationsService {
@@ -11,24 +13,27 @@ export class ApplicationsService {
   ) {}
 
   findAll(): Promise<Application[]> {
-    return this.applicationsRepository.find({
-      relations: ['position', 'candidate'],
-    });
+    return this.applicationsRepository.find();
   }
 
   findOne(id: number): Promise<Application> {
-    return this.applicationsRepository.findOne({
-      where: { id },
-      relations: ['position', 'candidate'],
-    });
+    return this.applicationsRepository.findOne({ where: { id } });
   }
 
-  create(application: Application): Promise<Application> {
-    return this.applicationsRepository.save(application);
+  async create(
+    createApplicationDto: CreateApplicationDto,
+  ): Promise<Application> {
+    const newApplication =
+      this.applicationsRepository.create(createApplicationDto);
+    return this.applicationsRepository.save(newApplication);
   }
 
-  async update(id: number, application: Application): Promise<void> {
-    await this.applicationsRepository.update(id, application);
+  async update(
+    id: number,
+    updateApplicationDto: UpdateApplicationDto,
+  ): Promise<Application> {
+    await this.applicationsRepository.update(id, updateApplicationDto);
+    return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {

@@ -8,7 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
-import { Application } from '../entities/application.entity';
+import { CreateApplicationDto } from './dto/create-application.dto';
+import { UpdateApplicationDto } from './dto/update-application.dto';
 
 @Controller('applications')
 export class ApplicationsController {
@@ -25,13 +26,16 @@ export class ApplicationsController {
   }
 
   @Post()
-  create(@Body() application: Application) {
-    return this.applicationsService.create(application);
+  create(@Body() createApplicationDto: CreateApplicationDto) {
+    return this.applicationsService.create(createApplicationDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() application: Application) {
-    return this.applicationsService.update(+id, application);
+  update(
+    @Param('id') id: string,
+    @Body() updateApplicationDto: UpdateApplicationDto,
+  ) {
+    return this.applicationsService.update(+id, updateApplicationDto);
   }
 
   @Delete(':id')

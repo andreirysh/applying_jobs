@@ -8,7 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CandidatesService } from './candidates.service';
-import { Candidate } from '../entities/candidate.entity';
+import { CreateCandidateDto } from './dto/create-candidate.dto';
+import { UpdateCandidateDto } from './dto/update-candidate.dto';
 
 @Controller('candidates')
 export class CandidatesController {
@@ -25,13 +26,16 @@ export class CandidatesController {
   }
 
   @Post()
-  create(@Body() candidate: Candidate) {
-    return this.candidatesService.create(candidate);
+  create(@Body() createCandidateDto: CreateCandidateDto) {
+    return this.candidatesService.create(createCandidateDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() candidate: Candidate) {
-    return this.candidatesService.update(+id, candidate);
+  update(
+    @Param('id') id: string,
+    @Body() updateCandidateDto: UpdateCandidateDto,
+  ) {
+    return this.candidatesService.update(+id, updateCandidateDto);
   }
 
   @Delete(':id')

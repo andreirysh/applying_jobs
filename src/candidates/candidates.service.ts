@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Candidate } from '../entities/candidate.entity';
+import { CreateCandidateDto } from './dto/create-candidate.dto'; // Импортируем DTO для создания
+import { UpdateCandidateDto } from './dto/update-candidate.dto'; // Импортируем DTO для обновления
+import { Candidate } from 'src/entities/candidate.entity';
 
 @Injectable()
 export class CandidatesService {
@@ -11,22 +13,24 @@ export class CandidatesService {
   ) {}
 
   findAll(): Promise<Candidate[]> {
-    return this.candidatesRepository.find({ relations: ['applications'] });
+    return this.candidatesRepository.find();
   }
 
   findOne(id: number): Promise<Candidate> {
-    return this.candidatesRepository.findOne({
-      where: { id },
-      relations: ['applications'],
-    });
+    return this.candidatesRepository.findOne({ where: { id } });
   }
 
-  create(candidate: Candidate): Promise<Candidate> {
-    return this.candidatesRepository.save(candidate);
+  async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
+    const newCandidate = this.candidatesRepository.create(createCandidateDto);
+    return this.candidatesRepository.save(newCandidate);
   }
 
-  async update(id: number, candidate: Candidate): Promise<void> {
-    await this.candidatesRepository.update(id, candidate);
+  async update(
+    id: number,
+    updateCandidateDto: UpdateCandidateDto,
+  ): Promise<Candidate> {
+    await this.candidatesRepository.update(id, updateCandidateDto);
+    return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
