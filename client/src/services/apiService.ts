@@ -17,3 +17,30 @@ export const fetchApplications = async () => {
   const data = await response.json();
   return data;
 };
+
+interface CandidateFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
+
+export async function createCandidate(candidateData: CandidateFormData) {
+  try {
+    const response = await fetch('http://localhost:3000/candidates', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(candidateData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create candidate');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error();
+  }
+}
