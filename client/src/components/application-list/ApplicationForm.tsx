@@ -16,7 +16,11 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ onSubmit }) =>
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(formData);
+        onSubmit({
+            ...formData,
+            candidateId: Number(formData.candidateId),
+            positionId: Number(formData.positionId)
+        });
         setFormData({ candidateId: 0, positionId: 0, cv: '' });
     };
 

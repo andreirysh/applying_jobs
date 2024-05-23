@@ -1,13 +1,18 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 import PositionEdit from './PositionEdit';
 import { Position, PositionListProps } from './interfaces';
 import { PositionDelete } from './PositionDelete';
+import { useSelector } from 'react-redux';
+import { selectPositions } from '../../store/slices/positions-slice';
+import { fetchPositions } from '../../services/apiService';
 
 export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete }) => {
     const [editPosition, setEditPosition] = useState<Position | null>(null);
     const [deletePosition, setDeletePosition] = useState<Position | null>(null);
+
+    const selector = useSelector(selectPositions);
 
     const handleEdit = (position: Position) => {
         setEditPosition(position);
@@ -24,6 +29,10 @@ export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, o
     const handleCloseDelete = () => {
         setDeletePosition(null);
     };
+
+    useEffect(() =>{
+        fetchPositions();
+    }, [positions])
 
     return (
         <div>

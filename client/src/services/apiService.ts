@@ -1,3 +1,7 @@
+import { ApplicationFormData } from "../components/application-list/interfaces";
+import { Candidate } from "../components/candidate-list/interfaces";
+import { CandidateFormData } from "./interfaces";
+
 const API_BASE_URL = 'http://localhost:3000';
 
 export const fetchPositions = async () => {
@@ -6,7 +10,7 @@ export const fetchPositions = async () => {
   return data;
 };
 
-export const fetchCandidates = async () => {
+export const fetchCandidates = async (): Promise<Candidate[]> => {
   const response = await fetch(`${API_BASE_URL}/candidates`);
   const data = await response.json();
   return data;
@@ -18,14 +22,7 @@ export const fetchApplications = async () => {
   return data;
 };
 
-interface CandidateFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
-export async function createCandidate(candidateData: CandidateFormData) {
+export const createCandidate = async (candidateData: CandidateFormData): Promise<Candidate> => {
   try {
     const response = await fetch(`${API_BASE_URL}/candidates`, {
       method: 'POST',
@@ -43,9 +40,9 @@ export async function createCandidate(candidateData: CandidateFormData) {
   } catch (error) {
     throw new Error('Error creating candidate');
   }
-}
+};
 
-export const createApplication = async (formData: any) => {
+export const createApplication = async (formData: ApplicationFormData) => {
   try {
     const response = await fetch(`${API_BASE_URL}/applications`, {
       method: 'POST',
@@ -61,14 +58,14 @@ export const createApplication = async (formData: any) => {
 
     const data = await response.json();
     console.log('Application created successfully:', data);
-    return data; // Возвращаем данные созданной заявки
+    return data;
   } catch (error) {
     console.error('Error creating application:', error);
     throw new Error('Error creating application');
   }
 };
 
-export const updateCandidate = async (id: any, newData: any) => {
+export const updateCandidate = async (id: number, newData: Partial<Candidate>): Promise<Candidate> => {
   try {
     const response = await fetch(`${API_BASE_URL}/candidates/${id}`, {
       method: 'PUT',
@@ -88,7 +85,7 @@ export const updateCandidate = async (id: any, newData: any) => {
   }
 };
 
-export const deleteCandidate = async (id: any) => {
+export const deleteCandidate = async (id: number): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE_URL}/candidates/${id}`, {
       method: 'DELETE',

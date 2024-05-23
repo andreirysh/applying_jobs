@@ -8,23 +8,28 @@ import { CandidateEdit } from './CandidateEdit';
 import { CandidateDelete } from './CandidateDelete';
 
 export const CandidateManager: React.FC = () => {
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+    }>({
         firstName: '',
         lastName: '',
         email: '',
         phone: ''
     });
-    const [editCandidate, setEditCandidate] = useState(null);
-    const [deleteCandidateData, setDeleteCandidateData] = useState(null);
+    const [editCandidate, setEditCandidate] = useState<Candidate | null>(null);
+    const [deleteCandidateData, setDeleteCandidateData] = useState<Candidate | null>(null);
 
     useEffect(() => {
         fetchCandidates()
-            .then(data => {
+            .then((data: Candidate[]) => {
                 setCandidates(data);
             })
-            .catch(error => {
+            .catch((error: Error) => {
                 console.error('Error fetching candidates:', error);
             });
     }, []);
@@ -32,7 +37,7 @@ export const CandidateManager: React.FC = () => {
     const handleFormSubmit = async () => {
         try {
             const newCandidate = await createCandidate(formData);
-            setCandidates(prevCandidates => [...prevCandidates, newCandidate] as any);
+            setCandidates(prevCandidates => [...prevCandidates, newCandidate]);
             setOpenDialog(false);
             setFormData({
                 firstName: '',
@@ -45,21 +50,23 @@ export const CandidateManager: React.FC = () => {
         }
     };
 
-    const handleEditCandidate = async (id: any, newData: any) => {
+    const handleEditCandidate = async (id: number, newData: Omit<Candidate, "id">) => {
         try {
             const updatedCandidate = await updateCandidate(id, newData);
-            setCandidates(prevCandidates => prevCandidates.map(candidate => {
-                if (candidate.id === id) {
-                    return updatedCandidate;
-                }
-                return candidate;
-            }) as any);
+            setCandidates(prevCandidates =>
+                prevCandidates.map(candidate => {
+                    if (candidate.id === id) {
+                        return updatedCandidate;
+                    }
+                    return candidate;
+                })
+            );
         } catch (error) {
             console.error('Error updating candidate:', error);
         }
     };
 
-    const handleDeleteCandidate = async (id: any) => {
+    const handleDeleteCandidate = async (id: number) => {
         try {
             await deleteCandidate(id);
             setCandidates(prevCandidates => prevCandidates.filter(candidate => candidate.id !== id));
@@ -68,7 +75,7 @@ export const CandidateManager: React.FC = () => {
         }
     };
 
-    const handleOpenEdit = (candidate: any) => {
+    const handleOpenEdit = (candidate: Candidate) => {
         setEditCandidate(candidate);
     };
 
@@ -76,7 +83,7 @@ export const CandidateManager: React.FC = () => {
         setEditCandidate(null);
     };
 
-    const handleOpenDelete = (candidate: any) => {
+    const handleOpenDelete = (candidate: Candidate) => {
         setDeleteCandidateData(candidate);
     };
 

@@ -4,10 +4,18 @@ import PositionForm from './PositionForm';
 import { fetchPositions } from '../../services/apiService';
 import { Position, PositionFormData } from './interfaces';
 import { PositionList } from './PositionsList';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPosition, selectPositions } from '../../store/slices/positions-slice';
 
 export const PositionManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [positions, setPositions] = useState<Position[]>([]);
+
+    const dispatch = useDispatch();
+    const selectPositionList = useSelector(selectPositions)
+
+    console.log(selectPositionList.positions);
+    
 
     useEffect(() => {
         fetchPositions()
@@ -34,7 +42,8 @@ export const PositionManager: React.FC = () => {
             }
 
             const data = await response.json();
-            setPositions(prevPositions => [...prevPositions, data] as any);
+            setPositions(prevPositions => [...prevPositions, data]);
+            dispatch(addPosition(data));
             setOpenDialog(false);
         } catch (error) {
             console.error(error);
@@ -61,11 +70,12 @@ export const PositionManager: React.FC = () => {
                     return updatedPosition;
                 }
                 return position;
-            }) as any);
+            }));
         } catch (error) {
             console.error(error);
         }
     };
+
 
     const handleDelete = async (positionId: number) => {
         try {

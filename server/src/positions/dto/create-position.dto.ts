@@ -1,11 +1,11 @@
-import { IsString, IsNotEmpty, IsIn } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { PositionStatus } from './enums/create-positions-enum';
 
 export class CreatePositionDto {
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @IsString()
-  @IsIn(['open', 'closed'])
-  status: string;
+  @IsEnum(PositionStatus)
+  status: PositionStatus;
 }
