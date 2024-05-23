@@ -4,7 +4,7 @@
   "port": 3306,
   "username": "root",
   "password": "RAzs2525252525",
-  "database": "job_applications",
+  "database": "job_app",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true
 }

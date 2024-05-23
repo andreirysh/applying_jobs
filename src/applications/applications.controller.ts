@@ -6,6 +6,8 @@ import {
   Param,
   Put,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -39,7 +41,8 @@ export class ApplicationsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string): Promise<void> {
     return this.applicationsService.remove(+id);
   }
 }
