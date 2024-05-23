@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -37,6 +37,15 @@ export class ApplicationsService {
   }
 
   async remove(id: number): Promise<void> {
+    const applications = await this.applicationsRepository.find({
+      where: { position: { id } },
+    });
+
+    if (applications.length === 0) {
+      throw new NotFoundException(
+        'Cannot delete position. There are no applications associated with it.',
+      );
+    }
     await this.applicationsRepository.delete(id);
   }
 }

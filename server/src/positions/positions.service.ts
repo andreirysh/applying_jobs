@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Position } from '../entities/position.entity';
 import { UpdatePositionDto } from './dto/update-position.dto';
 import { CreatePositionDto } from './dto/create-position.dto';
+import { ApplicationsService } from 'src/applications/applications.service';
 
 @Injectable()
 export class PositionsService {
   constructor(
     @InjectRepository(Position)
     private positionsRepository: Repository<Position>,
+    private readonly applicationsService: ApplicationsService,
   ) {}
 
   findAll(): Promise<Position[]> {
@@ -35,6 +37,21 @@ export class PositionsService {
   }
 
   async remove(id: number): Promise<void> {
+    const position = await this.findOne(id);
+    if (!position) {
+      throw new NotFoundException('Position not found');
+    }
+
+    const applications = await this.applicationsService.findAll();
+    const associatedApplications = applications.filter(
+      (app) => app.position.id === id,
+    );
+
+    if (associatedApplications.length > 0) {
+      throw new Error(
+        'Cannot delete position. There are applications associated with it.',
+      );
+    }
     await this.positionsRepository.delete(id);
   }
 }
