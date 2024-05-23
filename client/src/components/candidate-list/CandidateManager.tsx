@@ -2,17 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import CandidateForm from './CandidateForm';
 import CandidateList from './CandidateList';
-import { createCandidate, fetchCandidates } from '../../services/apiService';
+import CandidateEdit from './CandidateEdit';
+import CandidateDelete from './CandidateDelete';
+import { createCandidate, fetchCandidates, updateCandidate, deleteCandidate } from '../../services/apiService';
+
+export type Candidate = {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+};
 
 const CandidateManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
-    const [candidates, setCandidates] = useState([]);
+    const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         phone: ''
     });
+    const [editCandidate, setEditCandidate] = useState(null);
+    const [deleteCandidateData, setDeleteCandidateData] = useState(null);
 
     useEffect(() => {
         fetchCandidates()
@@ -40,6 +52,45 @@ const CandidateManager: React.FC = () => {
         }
     };
 
+    const handleEditCandidate = async (id: any, newData: any) => {
+        try {
+            const updatedCandidate = await updateCandidate(id, newData);
+            setCandidates(prevCandidates => prevCandidates.map(candidate => {
+                if (candidate.id === id) {
+                    return updatedCandidate;
+                }
+                return candidate;
+            }) as any);
+        } catch (error) {
+            console.error('Error updating candidate:', error);
+        }
+    };
+
+    const handleDeleteCandidate = async (id: any) => {
+        try {
+            await deleteCandidate(id);
+            setCandidates(prevCandidates => prevCandidates.filter(candidate => candidate.id !== id));
+        } catch (error) {
+            console.error('Error deleting candidate:', error);
+        }
+    };
+
+    const handleOpenEdit = (candidate: any) => {
+        setEditCandidate(candidate);
+    };
+
+    const handleCloseEdit = () => {
+        setEditCandidate(null);
+    };
+
+    const handleOpenDelete = (candidate: any) => {
+        setDeleteCandidateData(candidate);
+    };
+
+    const handleCloseDelete = () => {
+        setDeleteCandidateData(null);
+    };
+
     return (
         <div>
             <Typography variant="h4">Candidate Manager</Typography>
@@ -60,7 +111,13 @@ const CandidateManager: React.FC = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <CandidateList candidates={candidates} />
+            <CandidateList candidates={candidates} onEdit={handleOpenEdit} onDelete={handleOpenDelete} />
+            {editCandidate && (
+                <CandidateEdit candidate={editCandidate} onEdit={handleEditCandidate} onClose={handleCloseEdit} />
+            )}
+            {deleteCandidateData && (
+                <CandidateDelete candidate={deleteCandidateData} onDelete={handleDeleteCandidate} onClose={handleCloseDelete} />
+            )}
         </div>
     );
 };

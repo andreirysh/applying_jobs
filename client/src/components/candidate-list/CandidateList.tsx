@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 
 interface Candidate {
     id: number;
@@ -11,9 +11,11 @@ interface Candidate {
 
 interface CandidateListProps {
     candidates: Candidate[];
+    onEdit?: (candidate: Candidate) => void;
+    onDelete?: (candidate: Candidate) => void;
 }
 
-const CandidateList: React.FC<CandidateListProps> = ({ candidates }) => {
+const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDelete }) => {
     return (
         <div>
             <Typography variant="h5">Candidates</Typography>
@@ -27,6 +29,30 @@ const CandidateList: React.FC<CandidateListProps> = ({ candidates }) => {
                                 </Typography>
                                 <Typography color="textSecondary">Email: {candidate.email}</Typography>
                                 <Typography color="textSecondary">Phone: {candidate.phone}</Typography>
+                                <Grid container spacing={1} style={{ marginTop: '1rem' }}>
+                                    {onEdit && (
+                                        <Grid item>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() => onEdit(candidate)}
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Grid>
+                                    )}
+                                    {onDelete && (
+                                        <Grid item>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={() => onDelete(candidate)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Grid>
+                                    )}
+                                </Grid>
                             </CardContent>
                         </Card>
                     </Grid>

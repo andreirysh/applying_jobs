@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import PositionForm from './PositionForm';
 import PositionList from './PositionsList';
-import { addPosition } from '../../store/slices/positionsSlice';
-import { useDispatch } from 'react-redux';
 import { fetchPositions } from '../../services/apiService';
+import { Position } from './types';
 
 interface PositionFormData {
     title: string;
@@ -12,10 +11,8 @@ interface PositionFormData {
 }
 
 const PositionManager: React.FC = () => {
-    const dispatch = useDispatch();
     const [openDialog, setOpenDialog] = useState(false);
-
-    const [positions, setPositions] = useState([]);
+    const [positions, setPositions] = useState<Position[]>([]);
 
     useEffect(() => {
         fetchPositions()
@@ -42,14 +39,54 @@ const PositionManager: React.FC = () => {
             }
 
             const data = await response.json();
-            // setPositions((prevPositions) => [...prevPositions, data]);
-            dispatch(addPosition(data));
+            setPositions(prevPositions => [...prevPositions, data] as any);
             setOpenDialog(false);
         } catch (error) {
             console.error(error);
         }
     };
 
+    const handleEdit = async (positionId: number, formData: PositionFormData) => {
+        try {
+            const response = await fetch(`http://localhost:3000/positions/${positionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update position');
+            }
+
+            const updatedPosition = await response.json();
+            setPositions(prevPositions => prevPositions.map(position => {
+                if (position.id === positionId) {
+                    return updatedPosition;
+                }
+                return position;
+            }) as any);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDelete = async (positionId: number) => {
+        try {
+            const response = await fetch(`http://localhost:3000/positions/${positionId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete position');
+            }
+
+            setPositions(prevPositions => prevPositions.filter(position => position.id !== positionId));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <div>
@@ -68,7 +105,7 @@ const PositionManager: React.FC = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <PositionList positions={positions} />
+            <PositionList positions={positions} onEdit={handleEdit} onDelete={handleDelete} />
         </div>
     );
 };
