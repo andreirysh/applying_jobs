@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import CandidateForm from './CandidateForm';
-import CandidateList from './CandidateList';
-import CandidateEdit from './CandidateEdit';
-import CandidateDelete from './CandidateDelete';
 import { createCandidate, fetchCandidates, updateCandidate, deleteCandidate } from '../../services/apiService';
+import { Candidate } from './interfaces';
+import { CandidateList } from './CandidateList';
+import { CandidateForm } from './CandidateForm';
+import { CandidateEdit } from './CandidateEdit';
+import { CandidateDelete } from './CandidateDelete';
 
-export type Candidate = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-};
-
-const CandidateManager: React.FC = () => {
+export const CandidateManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [formData, setFormData] = useState({
@@ -121,5 +114,3 @@ const CandidateManager: React.FC = () => {
         </div>
     );
 };
-
-export default CandidateManager;

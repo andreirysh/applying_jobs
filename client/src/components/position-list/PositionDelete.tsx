@@ -1,14 +1,8 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { Position } from './types';
+import { PositionDeleteProps } from './interfaces';
 
-interface PositionDeleteProps {
-    position: Position;
-    onDelete: (id: number) => void;
-    onClose: () => void;
-}
-
-const PositionDelete: React.FC<PositionDeleteProps> = ({ position, onDelete, onClose }) => {
+export const PositionDelete: React.FC<PositionDeleteProps> = ({ position, onDelete, onClose }) => {
     const handleDelete = () => {
         onDelete(position.id);
         onClose();
@@ -33,5 +27,3 @@ const PositionDelete: React.FC<PositionDeleteProps> = ({ position, onDelete, onC
         </Dialog>
     );
 };
-
-export default PositionDelete;

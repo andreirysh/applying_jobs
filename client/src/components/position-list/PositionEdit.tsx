@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { Position } from './types';
-
-interface PositionEditProps {
-    position: Position;
-    onEdit: (id: number, newData: PositionFormData) => void;
-    onClose: () => void;
-}
-
-interface PositionFormData {
-    title: string;
-    status: string;
-}
+import { PositionEditProps, PositionFormData } from './interfaces';
 
 const PositionEdit: React.FC<PositionEditProps> = ({ position, onEdit, onClose }) => {
     const [formData, setFormData] = useState<PositionFormData>({

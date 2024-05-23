@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import PositionForm from './PositionForm';
-import PositionList from './PositionsList';
 import { fetchPositions } from '../../services/apiService';
-import { Position } from './types';
+import { Position, PositionFormData } from './interfaces';
+import { PositionList } from './PositionsList';
 
-interface PositionFormData {
-    title: string;
-    status: string;
-}
-
-const PositionManager: React.FC = () => {
+export const PositionManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [positions, setPositions] = useState<Position[]>([]);
 
@@ -109,5 +104,3 @@ const PositionManager: React.FC = () => {
         </div>
     );
 };
-
-export default PositionManager;

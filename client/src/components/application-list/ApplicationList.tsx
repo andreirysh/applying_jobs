@@ -1,18 +1,8 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
+import { ApplicationListProps } from './interfaces';
 
-interface Application {
-    id: number;
-    candidateId: number;
-    positionId: number;
-    cv: string;
-}
-
-interface ApplicationListProps {
-    applications: Application[];
-}
-
-const ApplicationList: React.FC<ApplicationListProps> = ({ applications }) => {
+export const ApplicationList: React.FC<ApplicationListProps> = ({ applications }) => {
     return (
         <div>
             <Typography variant="h5">Applications</Typography>
@@ -35,5 +25,3 @@ const ApplicationList: React.FC<ApplicationListProps> = ({ applications }) => {
         </div>
     );
 };
-
-export default ApplicationList;

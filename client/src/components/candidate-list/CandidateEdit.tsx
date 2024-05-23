@@ -1,29 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Candidate, CandidateEditProps } from './interfaces';
 
-interface CandidateEditProps {
-    candidate: Candidate;
-    onEdit: (id: number, newData: CandidateFormData) => void;
-    onClose: () => void;
-}
-
-interface CandidateFormData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-}
-
-interface Candidate {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-}
-
-const CandidateEdit: React.FC<CandidateEditProps> = ({ candidate, onEdit, onClose }) => {
-    const [formData, setFormData] = useState<CandidateFormData>({
+export const CandidateEdit: React.FC<CandidateEditProps> = ({ candidate, onEdit, onClose }) => {
+    const [formData, setFormData] = useState<Omit<Candidate, 'id'>>({
         firstName: candidate.firstName,
         lastName: candidate.lastName,
         email: candidate.email,
@@ -87,5 +67,3 @@ const CandidateEdit: React.FC<CandidateEditProps> = ({ candidate, onEdit, onClos
         </Dialog>
     );
 };
-
-export default CandidateEdit;

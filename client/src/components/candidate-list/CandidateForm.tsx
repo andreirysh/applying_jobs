@@ -1,22 +1,8 @@
 import React from 'react';
 import { TextField, Typography, Grid } from '@mui/material';
+import { CandidateFormProps } from './interfaces';
 
-interface CandidateFormProps {
-    formData: {
-        firstName: string;
-        lastName: string;
-        email: string;
-        phone: string;
-    };
-    setFormData: React.Dispatch<React.SetStateAction<{
-        firstName: string;
-        lastName: string;
-        email: string;
-        phone: string;
-    }>>;
-}
-
-const CandidateForm: React.FC<CandidateFormProps> = ({ formData, setFormData }) => {
+export const CandidateForm: React.FC<CandidateFormProps> = ({ formData, setFormData }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prevFormData => ({
@@ -74,5 +60,3 @@ const CandidateForm: React.FC<CandidateFormProps> = ({ formData, setFormData }) 
         </form>
     );
 };
-
-export default CandidateForm;

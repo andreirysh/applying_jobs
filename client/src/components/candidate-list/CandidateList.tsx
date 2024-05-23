@@ -1,21 +1,8 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import { CandidateListProps } from './interfaces';
 
-interface Candidate {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-}
-
-interface CandidateListProps {
-    candidates: Candidate[];
-    onEdit?: (candidate: Candidate) => void;
-    onDelete?: (candidate: Candidate) => void;
-}
-
-const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDelete }) => {
+export const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDelete }) => {
     return (
         <div>
             <Typography variant="h5">Candidates</Typography>
@@ -61,5 +48,3 @@ const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDel
         </div>
     );
 };
-
-export default CandidateList;

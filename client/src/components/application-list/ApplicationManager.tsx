@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import ApplicationList from './ApplicationList';
-import ApplicationForm from './ApplicationForm';
 import { fetchApplications, createApplication } from '../../services/apiService';
+import { Application, ApplicationFormData } from './interfaces';
+import { ApplicationList } from './ApplicationList';
+import { ApplicationForm } from './ApplicationForm';
 
-interface Application {
-    id: number;
-    candidateId: number;
-    positionId: number;
-    cv: string;
-}
-
-interface ApplicationFormData {
-    candidateId: number;
-    positionId: number;
-    cv: string;
-}
-
-const ApplicationManager: React.FC = () => {
+export const ApplicationManager: React.FC = () => {
     const [applications, setApplications] = useState<Application[]>([]);
 
     useEffect(() => {
@@ -46,5 +34,3 @@ const ApplicationManager: React.FC = () => {
         </div>
     );
 };
-
-export default ApplicationManager;

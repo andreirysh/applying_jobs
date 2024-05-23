@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Grid } from '@mui/material';
+import { ApplicationFormData } from './interfaces';
 
 interface ApplicationFormProps {
     onSubmit: (formData: ApplicationFormData) => void;
 }
 
-interface ApplicationFormData {
-    candidateId: number;
-    positionId: number;
-    cv: string;
-}
-
-const ApplicationForm: React.FC<ApplicationFormProps> = ({ onSubmit }) => {
+export const ApplicationForm: React.FC<ApplicationFormProps> = ({ onSubmit }) => {
     const [formData, setFormData] = useState<ApplicationFormData>({ candidateId: 0, positionId: 0, cv: '' });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,5 +63,3 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ onSubmit }) => {
         </form>
     );
 };
-
-export default ApplicationForm;

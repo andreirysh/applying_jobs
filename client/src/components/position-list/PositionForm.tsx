@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Grid } from '@mui/material';
-
-interface PositionFormProps {
-    onSubmit: (formData: PositionFormData) => void;
-    initialData?: PositionFormData;
-}
-
-interface PositionFormData {
-    title: string;
-    status: string;
-}
+import { PositionFormData, PositionFormProps } from './interfaces';
 
 const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialData }) => {
     const [formData, setFormData] = useState<PositionFormData>(initialData || { title: '', status: '' });

@@ -2,26 +2,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 import PositionEdit from './PositionEdit';
-import PositionDelete from './PositionDelete';
+import { Position, PositionListProps } from './interfaces';
+import { PositionDelete } from './PositionDelete';
 
-interface Position {
-    id: number;
-    title: string;
-    status: string;
-}
-
-interface PositionListProps {
-    positions: Position[];
-    onEdit: (id: number, newData: PositionFormData) => void;
-    onDelete: (id: number) => void;
-}
-
-interface PositionFormData {
-    title: string;
-    status: string;
-}
-
-const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete }) => {
+export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete }) => {
     const [editPosition, setEditPosition] = useState<Position | null>(null);
     const [deletePosition, setDeletePosition] = useState<Position | null>(null);
 
@@ -81,5 +65,3 @@ const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete
         </div>
     );
 };
-
-export default PositionList;
