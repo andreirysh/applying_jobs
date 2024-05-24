@@ -2,7 +2,9 @@ This is a full-stack web application built using Nest.js with TypeORM and MySQL 
 and React with Material UI for the frontend. 
 The application is Dockerized for easy deployment and running.
 
-To run the app type npm start
+To run the app :
+1. go the server folder via terminal: "cd server" and type npm run
+2. go the client folder via terminal: "cd client" and type npm run
 
 Explanation why the chosen approach is used:
 
