@@ -52,7 +52,7 @@ Cons of the Stack:
 Developers should be prepared to invest time in learning and mastering the technologies involved, especially considering the potential complexity of managing both the backend and frontend aspects of the application.
 While the stack offers great flexibility and power, it may not be the best choice for small or simple projects due to the learning curve and setup overhead.
 
-Фssumptions possible during code operation:
+Assumptions possible during code operation:
 
 Assumptions:
 Stable Database Connection: The code assumes a stable connection to the MySQL database. Any network issues or database server downtime could disrupt the application's functionality.
