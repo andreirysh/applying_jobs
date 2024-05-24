@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { fetchApplications, createApplication } from '../../services/apiService';
 import { Application, ApplicationFormData } from './interfaces';
 import { ApplicationList } from './ApplicationList';
 import { ApplicationForm } from './ApplicationForm';
 import { Typography } from '@mui/material';
+import { ApplicationEdit } from './ApplicationEdit';
+import { ApplicationDelete } from './ApplicationDelete';
+import { createApplication, deleteApplication, fetchApplications, updateApplication } from '../../services/apiService';
 
 export const ApplicationManager: React.FC = () => {
     const [applications, setApplications] = useState<Application[]>([]);
+    const [editApplication, setEditApplication] = useState<Application | null>(null);
+    const [deleteApplicationData, setDeleteApplicationData] = useState<Application | null>(null);
 
     useEffect(() => {
         fetchApplications()
@@ -22,16 +26,69 @@ export const ApplicationManager: React.FC = () => {
         try {
             const newApplication: Application = await createApplication(formData);
             setApplications(prevApplications => [...prevApplications, newApplication]);
-        } catch {
-            console.error('Error creating application:');
+        } catch (error) {
+            console.error('Error creating application:', error);
         }
+    };
+
+    const handleEditApplication = async (id: number, newData: Omit<Application, "id">) => {
+        try {
+            const updatedApplication: Application = await updateApplication(id, newData);
+            setApplications(prevApplications =>
+                prevApplications.map(application => {
+                    if (application.id === id) {
+                        return updatedApplication;
+                    }
+                    return application;
+                })
+            );
+        } catch (error) {
+            console.error('Error updating application:', error);
+        }
+    };
+
+    const handleDeleteApplication = async (id: number) => {
+        try {
+            await deleteApplication(id);
+            setApplications(prevApplications => prevApplications.filter(application => application.id !== id));
+        } catch (error) {
+            console.error('Error deleting application:', error);
+        }
+    };
+
+    const handleCloseEdit = () => {
+        setEditApplication(null);
+    };
+
+    const handleCloseDelete = () => {
+        setDeleteApplicationData(null);
     };
 
     return (
         <div>
-            <Typography variant='h2'>Applications</Typography>
-            <ApplicationList applications={applications} />
-            <ApplicationForm onSubmit={handleFormSubmit} />
+            <div className='manager-header'>
+                <Typography variant='h4'>Applications</Typography>
+                <ApplicationForm onSubmit={handleFormSubmit} />
+            </div>
+            <ApplicationList
+                applications={applications}
+                onEdit={setEditApplication}
+                onDelete={setDeleteApplicationData}
+            />
+            {editApplication && (
+                <ApplicationEdit
+                    application={editApplication}
+                    onEdit={handleEditApplication}
+                    onClose={handleCloseEdit}
+                />
+            )}
+            {deleteApplicationData && (
+                <ApplicationDelete
+                    application={deleteApplicationData}
+                    onDelete={handleDeleteApplication}
+                    onClose={handleCloseDelete}
+                />
+            )}
         </div>
     );
 };

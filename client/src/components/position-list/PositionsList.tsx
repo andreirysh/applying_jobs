@@ -7,6 +7,7 @@ import { PositionDelete } from './PositionDelete';
 import { useSelector } from 'react-redux';
 import { selectPositions } from '../../store/slices/positions-slice';
 import { fetchPositions } from '../../services/apiService';
+import '../../styles/styles.css';
 
 export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete }) => {
     const [editPosition, setEditPosition] = useState<Position | null>(null);
@@ -35,7 +36,7 @@ export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, o
     }, [positions])
 
     return (
-        <div>
+        <div className='list-wrapper'>
             <Typography variant="h5">Positions</Typography>
             <Grid container spacing={2}>
                 {positions.map((position) => (

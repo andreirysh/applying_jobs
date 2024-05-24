@@ -6,6 +6,7 @@ import { CandidateList } from './CandidateList';
 import { CandidateForm } from './CandidateForm';
 import { CandidateEdit } from './CandidateEdit';
 import { CandidateDelete } from './CandidateDelete';
+import './candidate-style.css';
 
 export const CandidateManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -93,10 +94,12 @@ export const CandidateManager: React.FC = () => {
 
     return (
         <div>
-            <Typography variant="h4">Candidate Manager</Typography>
-            <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
-                Add Candidate
-            </Button>
+            <div className='manager-header'>
+                <Typography variant="h4">Candidate Manager</Typography>
+                <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
+                    Add Candidate
+                </Button>
+            </div>
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Create a New Candidate</DialogTitle>
                 <DialogContent>

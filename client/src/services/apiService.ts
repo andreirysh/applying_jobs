@@ -1,4 +1,4 @@
-import { ApplicationFormData } from "../components/application-list/interfaces";
+import { Application, ApplicationFormData } from "../components/application-list/interfaces";
 import { Candidate } from "../components/candidate-list/interfaces";
 import { CandidateFormData } from "./interfaces";
 
@@ -98,5 +98,41 @@ export const deleteCandidate = async (id: number): Promise<boolean> => {
     return true;
   } catch (error) {
     throw new Error('Error deleting candidate');
+  }
+};
+
+export const deleteApplication = async (id: number): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/applications/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete application');
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error('Error deleting application');
+  }
+};
+
+export const updateApplication = async (id: number, newData: Partial<Application>): Promise<Application> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/applications/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update application');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error('Error updating application');
   }
 };

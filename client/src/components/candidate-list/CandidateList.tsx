@@ -4,7 +4,7 @@ import { CandidateListProps } from './interfaces';
 
 export const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDelete }) => {
     return (
-        <div>
+        <div className='list-wrapper'>
             <Typography variant="h5">Candidates</Typography>
             <Grid container spacing={2}>
                 {candidates.map((candidate) => (

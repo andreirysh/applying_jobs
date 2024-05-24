@@ -6,6 +6,7 @@ import { Position, PositionFormData } from './interfaces';
 import { PositionList } from './PositionsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPosition, selectPositions } from '../../store/slices/positions-slice';
+import '../../styles/styles.css';
 
 export const PositionManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -15,7 +16,7 @@ export const PositionManager: React.FC = () => {
     const selectPositionList = useSelector(selectPositions)
 
     console.log(selectPositionList.positions);
-    
+
 
     useEffect(() => {
         fetchPositions()
@@ -94,11 +95,13 @@ export const PositionManager: React.FC = () => {
     };
 
     return (
-        <div>
-            <Typography variant="h4">Position Manager</Typography>
-            <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
-                Add Position
-            </Button>
+        <div >
+            <div className='manager-header'>
+                <Typography variant="h4">Position Manager</Typography>
+                <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
+                    Add Position
+                </Button>
+            </div>
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Create a New Position</DialogTitle>
                 <DialogContent>
