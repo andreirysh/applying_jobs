@@ -57,7 +57,6 @@ export const createApplication = async (formData: ApplicationFormData) => {
     }
 
     const data = await response.json();
-    console.log('Application created successfully:', data);
     return data;
   } catch (error) {
     console.error('Error creating application:', error);
@@ -65,7 +64,7 @@ export const createApplication = async (formData: ApplicationFormData) => {
   }
 };
 
-export const updateCandidate = async (id: number, newData: Partial<Candidate>): Promise<Candidate> => {
+export const updateCandidate = async (id: number, newData: Partial<Candidate>): Promise<void> => {
   try {
     const response = await fetch(`${API_BASE_URL}/candidates/${id}`, {
       method: 'PUT',
@@ -78,8 +77,6 @@ export const updateCandidate = async (id: number, newData: Partial<Candidate>): 
     if (!response.ok) {
       throw new Error('Failed to update candidate');
     }
-
-    return await response.json();
   } catch (error) {
     throw new Error('Error updating candidate');
   }

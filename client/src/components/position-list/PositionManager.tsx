@@ -4,8 +4,8 @@ import PositionForm from './PositionForm';
 import { fetchPositions } from '../../services/apiService';
 import { Position, PositionFormData } from './interfaces';
 import { PositionList } from './PositionsList';
-import { useDispatch, useSelector } from 'react-redux';
-import { addPosition, selectPositions } from '../../store/slices/positions-slice';
+import { useDispatch } from 'react-redux';
+import { addPosition } from '../../store/slices/positions-slice';
 import '../../styles/styles.css';
 
 export const PositionManager: React.FC = () => {
@@ -13,10 +13,6 @@ export const PositionManager: React.FC = () => {
     const [positions, setPositions] = useState<Position[]>([]);
 
     const dispatch = useDispatch();
-    const selectPositionList = useSelector(selectPositions)
-
-    console.log(selectPositionList.positions);
-
 
     useEffect(() => {
         fetchPositions()
@@ -64,11 +60,10 @@ export const PositionManager: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Failed to update position');
             }
-
-            const updatedPosition = await response.json();
+    
             setPositions(prevPositions => prevPositions.map(position => {
                 if (position.id === positionId) {
-                    return updatedPosition;
+                    return {...position, ...formData};
                 }
                 return position;
             }));

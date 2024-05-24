@@ -6,7 +6,6 @@ import { CandidateList } from './CandidateList';
 import { CandidateForm } from './CandidateForm';
 import { CandidateEdit } from './CandidateEdit';
 import { CandidateDelete } from './CandidateDelete';
-import './candidate-style.css';
 
 export const CandidateManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -53,11 +52,11 @@ export const CandidateManager: React.FC = () => {
 
     const handleEditCandidate = async (id: number, newData: Omit<Candidate, "id">) => {
         try {
-            const updatedCandidate = await updateCandidate(id, newData);
+            await updateCandidate(id, newData);
             setCandidates(prevCandidates =>
                 prevCandidates.map(candidate => {
                     if (candidate.id === id) {
-                        return updatedCandidate;
+                        return {...candidate, ...newData};
                     }
                     return candidate;
                 })
