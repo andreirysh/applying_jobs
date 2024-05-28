@@ -3,7 +3,6 @@ import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions }
 import { fetchPositions } from '../../../services/apiService';
 import { Position, PositionFormData } from '../interfaces';
 import { PositionList } from '../PositionLists/PositionsList';
-import { addPosition } from '../../../store/slices/positions-slice';
 import PositionForm from '../PositionForm/PositionForm';
 import '../../../styles/styles.css';
 
