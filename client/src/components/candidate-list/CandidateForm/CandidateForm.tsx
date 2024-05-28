@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Typography, Grid } from '@mui/material';
-import { CandidateFormProps } from './interfaces';
+import { CandidateFormProps } from '../interfaces';
 
 export const CandidateForm: React.FC<CandidateFormProps> = ({ formData, setFormData }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,7 +13,7 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ formData, setFormD
 
     return (
         <form>
-            <Typography variant="h6">Create a New Candidate</Typography>
+            <Typography data-testid='candidate-title' variant="h6">Create a New Candidate</Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField

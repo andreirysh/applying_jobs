@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import PositionForm from './PositionForm';
-import { fetchPositions } from '../../services/apiService';
-import { Position, PositionFormData } from './interfaces';
-import { PositionList } from './PositionsList';
-import { useDispatch } from 'react-redux';
-import { addPosition } from '../../store/slices/positions-slice';
-import '../../styles/styles.css';
+import { fetchPositions } from '../../../services/apiService';
+import { Position, PositionFormData } from '../interfaces';
+import { PositionList } from '../PositionLists/PositionsList';
+import { addPosition } from '../../../store/slices/positions-slice';
+import PositionForm from '../PositionForm/PositionForm';
+import '../../../styles/styles.css';
 
 export const PositionManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [positions, setPositions] = useState<Position[]>([]);
 
-    const dispatch = useDispatch();
 
     useEffect(() => {
         fetchPositions()
@@ -40,7 +38,6 @@ export const PositionManager: React.FC = () => {
 
             const data = await response.json();
             setPositions(prevPositions => [...prevPositions, data]);
-            dispatch(addPosition(data));
             setOpenDialog(false);
         } catch (error) {
             console.error(error);

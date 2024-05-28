@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { CandidateDeleteProps } from './interfaces';
+import { CandidateDeleteProps } from '../interfaces';
 
 export const CandidateDelete: React.FC<CandidateDeleteProps> = ({ candidate, onDelete, onClose }) => {
     const handleDelete = () => {

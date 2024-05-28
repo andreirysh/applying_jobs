@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
-import { CandidateListProps } from './interfaces';
+import { CandidateListProps } from '../interfaces';
 
 export const CandidateList: React.FC<CandidateListProps> = ({ candidates, onEdit, onDelete }) => {
     return (

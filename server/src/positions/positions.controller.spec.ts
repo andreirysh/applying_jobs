@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PositionsController } from './positions.controller';
 import { PositionsService } from './positions.service';
 import { CreatePositionDto } from './dto/create-position.dto';
+import { PositionStatus } from './dto/enums/create-positions-enum';
 
 describe('PositionsController', () => {
   let controller: PositionsController;
@@ -39,12 +40,18 @@ describe('PositionsController', () => {
   });
 
   it('create should return the created position', async () => {
-    const dto: CreatePositionDto = { title: 'Test', status: 'open' };
+    const dto: CreatePositionDto = {
+      title: 'Test',
+      status: PositionStatus.Open,
+    };
     expect(await controller.create(dto)).toEqual({});
   });
 
   it('update should return the updated position', async () => {
-    const dto: CreatePositionDto = { title: 'Test', status: 'open' };
+    const dto: CreatePositionDto = {
+      title: 'Test',
+      status: PositionStatus.Open,
+    };
     expect(await controller.update('1', dto)).toEqual({});
   });
 

@@ -1,3 +1,5 @@
+import { ApplicationFormData } from "../application-list/interfaces";
+
 export interface PositionFormData {
     title: string;
     status: string;
@@ -30,4 +32,8 @@ export interface PositionEditProps {
     position: Position;
     onEdit: (id: number, newData: PositionFormData) => void;
     onClose: () => void;
+}
+
+export interface ApplicationFormProps {
+    onSubmit: (formData: ApplicationFormData) => void;
 }

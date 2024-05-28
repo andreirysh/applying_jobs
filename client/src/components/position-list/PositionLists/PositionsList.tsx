@@ -1,11 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
-import PositionEdit from './PositionEdit';
-import { Position, PositionListProps } from './interfaces';
-import { PositionDelete } from './PositionDelete';
-import { fetchPositions } from '../../services/apiService';
-import '../../styles/styles.css';
+import { Position, PositionListProps } from '../interfaces';
+import { fetchPositions } from '../../../services/apiService';
+import PositionEdit from '../PositionEdit/PositionEdit';
+import { PositionDelete } from '../PositionDelete/PositionDelete';
+import '../../../styles/styles.css';
 
 export const PositionList: React.FC<PositionListProps> = ({ positions, onEdit, onDelete }) => {
     const [editPosition, setEditPosition] = useState<Position | null>(null);

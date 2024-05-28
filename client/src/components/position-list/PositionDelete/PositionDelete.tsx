@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { PositionDeleteProps } from './interfaces';
+import { PositionDeleteProps } from '../interfaces';
 
 export const PositionDelete: React.FC<PositionDeleteProps> = ({ position, onDelete, onClose }) => {
     const handleDelete = () => {

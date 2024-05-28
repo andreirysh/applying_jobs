@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { PositionEditProps, PositionFormData } from './interfaces';
+import { PositionEditProps, PositionFormData } from '../interfaces';
 
 const PositionEdit: React.FC<PositionEditProps> = ({ position, onEdit, onClose }) => {
     const [formData, setFormData] = useState<PositionFormData>({
@@ -27,6 +27,7 @@ const PositionEdit: React.FC<PositionEditProps> = ({ position, onEdit, onClose }
                     <TextField
                         name="title"
                         label="Title"
+                        data-testid='title'
                         value={formData.title}
                         onChange={handleChange}
                         fullWidth
@@ -35,6 +36,7 @@ const PositionEdit: React.FC<PositionEditProps> = ({ position, onEdit, onClose }
                     <TextField
                         name="status"
                         label="Status"
+                        data-testid='status'
                         value={formData.status}
                         onChange={handleChange}
                         fullWidth

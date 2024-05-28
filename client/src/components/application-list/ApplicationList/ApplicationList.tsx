@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
-import { ApplicationListProps } from './interfaces';
+import { ApplicationListProps } from '../interfaces';
 
 export const ApplicationList: React.FC<ApplicationListProps> = ({ applications, onEdit, onDelete }) => {
     return (

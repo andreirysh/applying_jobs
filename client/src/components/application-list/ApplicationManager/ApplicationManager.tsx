@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Application, ApplicationFormData } from './interfaces';
-import { ApplicationList } from './ApplicationList';
-import { ApplicationForm } from './ApplicationForm';
+import { Application, ApplicationFormData } from '../interfaces';
 import { Typography } from '@mui/material';
-import { ApplicationEdit } from './ApplicationEdit';
-import { ApplicationDelete } from './ApplicationDelete';
-import { createApplication, deleteApplication, fetchApplications, updateApplication } from '../../services/apiService';
+import { ApplicationDelete } from '../ApplicationDelete/ApplicationDelete';
+import { createApplication, deleteApplication, fetchApplications, updateApplication } from '../../../services/apiService';
+import { ApplicationForm } from '../ApplicationForm/ApplicationForm';
+import { ApplicationList } from '../ApplicationList/ApplicationList';
+import { ApplicationEdit } from '../ApplicationEdit/ApplicationEdit';
 
 export const ApplicationManager: React.FC = () => {
     const [applications, setApplications] = useState<Application[]>([]);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { createCandidate, fetchCandidates, updateCandidate, deleteCandidate } from '../../services/apiService';
-import { Candidate } from './interfaces';
-import { CandidateList } from './CandidateList';
-import { CandidateForm } from './CandidateForm';
-import { CandidateEdit } from './CandidateEdit';
-import { CandidateDelete } from './CandidateDelete';
+import { createCandidate, fetchCandidates, updateCandidate, deleteCandidate } from '../../../services/apiService';
+import { Candidate } from '../interfaces';
+import { CandidateForm } from '../CandidateForm/CandidateForm';
+import { CandidateList } from '../CandidateList/CandidateList';
+import { CandidateEdit } from '../CandidateEdit/CandidateEdit';
+import { CandidateDelete } from '../CandidateDelete/CandidateDelete';
 
 export const CandidateManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);

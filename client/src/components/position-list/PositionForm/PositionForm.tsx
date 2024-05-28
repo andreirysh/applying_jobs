@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Grid } from '@mui/material';
-import { PositionFormData, PositionFormProps } from './interfaces';
+import { PositionFormData, PositionFormProps } from '../interfaces';
 
 const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialData }) => {
     const [formData, setFormData] = useState<PositionFormData>(initialData || { title: '', status: '' });
@@ -17,7 +17,7 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialData }) =>
 
     return (
         <form onSubmit={handleSubmit}>
-            <Typography variant="h6">Create a New Position</Typography>
+            <Typography data-testid='position-title' variant="h6">Create a New Position</Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField

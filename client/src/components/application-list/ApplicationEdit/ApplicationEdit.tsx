@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { ApplicationEditProps } from './interfaces';
+import { ApplicationEditProps } from '../interfaces';
 
 export const ApplicationEdit: React.FC<ApplicationEditProps> = ({ application, onEdit, onClose }) => {
     const [cv, setCv] = React.useState(application.cv);
@@ -21,6 +21,7 @@ export const ApplicationEdit: React.FC<ApplicationEditProps> = ({ application, o
             <DialogContent>
                 <form onSubmit={handleSubmit}>
                     <TextField
+                        data-testid='cv'
                         label="CV"
                         value={cv}
                         onChange={handleChange}

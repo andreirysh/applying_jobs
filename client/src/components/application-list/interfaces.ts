@@ -7,8 +7,8 @@ export interface Application {
 }
 
 export interface ApplicationFormData {
-    candidateId: number;
-    positionId: number;
+    candidateId?: number;
+    positionId?: number;
     cv: string;
 }
 export interface ApplicationListProps {

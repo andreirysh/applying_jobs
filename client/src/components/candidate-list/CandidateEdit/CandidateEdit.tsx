@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { Candidate, CandidateEditProps } from './interfaces';
+import { Candidate, CandidateEditProps } from '../interfaces';
 
 export const CandidateEdit: React.FC<CandidateEditProps> = ({ candidate, onEdit, onClose }) => {
     const [formData, setFormData] = useState<Omit<Candidate, 'id'>>({
