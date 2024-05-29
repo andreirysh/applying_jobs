@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material';
 import { fetchPositions } from '../../../services/apiService';
 import { Position, PositionFormData } from '../interfaces';
 import { PositionList } from '../PositionLists/PositionsList';
 import PositionForm from '../PositionForm/PositionForm';
 import '../../../styles/styles.css';
+import { ApiError } from '../../candidate-list/interfaces';
 
 export const PositionManager: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [positions, setPositions] = useState<Position[]>([]);
-
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         fetchPositions()
             .then(data => {
                 setPositions(data);
             })
-            .catch(error => {
-                console.error('Error fetching positions:', error);
+            .catch((error: unknown) => {
+                if (isApiError(error)) {
+                    showError('Error fetching positions: ' + (error.response?.data?.message || error.message));
+                } else {
+                    showError('Error fetching positions: ' + String(error));
+                }
             });
     }, []);
 
@@ -38,8 +44,8 @@ export const PositionManager: React.FC = () => {
             const data = await response.json();
             setPositions(prevPositions => [...prevPositions, data]);
             setOpenDialog(false);
-        } catch (error) {
-            console.error(error);
+        } catch (error: unknown) {
+            showError('Error: ' + (error instanceof Error ? error.message : String(error)));
         }
     };
 
@@ -63,8 +69,8 @@ export const PositionManager: React.FC = () => {
                 }
                 return position;
             }));
-        } catch (error) {
-            console.error(error);
+        } catch (error: unknown) {
+            showError('Error: ' + (error instanceof Error ? error.message : String(error)));
         }
     };
 
@@ -80,9 +86,23 @@ export const PositionManager: React.FC = () => {
             }
 
             setPositions(prevPositions => prevPositions.filter(position => position.id !== positionId));
-        } catch (error) {
-            console.error(error);
+        } catch (error: unknown) {
+            showError('Error: ' + (error instanceof Error ? error.message : String(error)));
         }
+    };
+
+    const showError = (message: string) => {
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+        setSnackbarMessage('');
+    };
+
+    const isApiError = (error: unknown): error is ApiError => {
+        return (error as ApiError).message !== undefined;
     };
 
     return (
@@ -105,6 +125,15 @@ export const PositionManager: React.FC = () => {
                 </DialogActions>
             </Dialog>
             <PositionList positions={positions} onEdit={handleEdit} onDelete={handleDelete} />
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

@@ -6,6 +6,8 @@ import {
   Param,
   Put,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PositionsService } from './positions.service';
 import { CreatePositionDto } from './dto/create-position.dto';
@@ -16,31 +18,52 @@ export class PositionsController {
   constructor(private readonly positionsService: PositionsService) {}
 
   @Get()
-  findAll() {
-    return this.positionsService.findAll();
+  async findAll() {
+    try {
+      return await this.positionsService.findAll();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.positionsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.positionsService.findOne(+id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post()
-  create(@Body() createPositionDto: CreatePositionDto) {
-    return this.positionsService.create(createPositionDto);
+  async create(@Body() createPositionDto: CreatePositionDto) {
+    try {
+      return await this.positionsService.create(createPositionDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updatePositionDto: UpdatePositionDto,
   ) {
-    return this.positionsService.update(+id, updatePositionDto);
+    try {
+      await this.positionsService.update(+id, updatePositionDto);
+      return { message: 'Position updated successfully' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): void {
-    this.positionsService.remove(+id);
-    return;
+  async remove(@Param('id') id: string) {
+    try {
+      await this.positionsService.remove(+id);
+      return { message: 'Position deleted successfully' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

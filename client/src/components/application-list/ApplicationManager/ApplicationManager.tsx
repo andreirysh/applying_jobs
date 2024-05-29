@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Application, ApplicationFormData } from '../interfaces';
-import { Typography } from '@mui/material';
+import { Typography, Snackbar, Alert } from '@mui/material';
 import { ApplicationDelete } from '../ApplicationDelete/ApplicationDelete';
 import { createApplication, deleteApplication, fetchApplications, updateApplication } from '../../../services/apiService';
 import { ApplicationForm } from '../ApplicationForm/ApplicationForm';
 import { ApplicationList } from '../ApplicationList/ApplicationList';
 import { ApplicationEdit } from '../ApplicationEdit/ApplicationEdit';
+import { ApiError } from '../../candidate-list/interfaces';
+
 
 export const ApplicationManager: React.FC = () => {
     const [applications, setApplications] = useState<Application[]>([]);
     const [editApplication, setEditApplication] = useState<Application | null>(null);
     const [deleteApplicationData, setDeleteApplicationData] = useState<Application | null>(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         fetchApplications()
             .then((data: Application[]) => {
                 setApplications(data);
             })
-            .catch((error: Error) => {
-                console.error('Error fetching applications:', error);
+            .catch((error: unknown) => {
+                if (isApiError(error)) {
+                    showError('Error: ' + (error.response?.data?.message || error.message));
+                } else {
+                    showError('Error: ' + String(error));
+                }
             });
     }, []);
 
@@ -26,8 +34,12 @@ export const ApplicationManager: React.FC = () => {
         try {
             const newApplication: Application = await createApplication(formData);
             setApplications(prevApplications => [...prevApplications, newApplication]);
-        } catch (error) {
-            console.error('Error creating application:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error: ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error: ' + String(error));
+            }
         }
     };
 
@@ -42,8 +54,12 @@ export const ApplicationManager: React.FC = () => {
                     return application;
                 })
             );
-        } catch (error) {
-            console.error('Error updating application:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error: ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error: ' + String(error));
+            }
         }
     };
 
@@ -51,8 +67,12 @@ export const ApplicationManager: React.FC = () => {
         try {
             await deleteApplication(id);
             setApplications(prevApplications => prevApplications.filter(application => application.id !== id));
-        } catch (error) {
-            console.error('Error deleting application:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error ' + String(error));
+            }
         }
     };
 
@@ -62,6 +82,20 @@ export const ApplicationManager: React.FC = () => {
 
     const handleCloseDelete = () => {
         setDeleteApplicationData(null);
+    };
+
+    const showError = (message: string) => {
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+        setSnackbarMessage('');
+    };
+
+    const isApiError = (error: unknown): error is ApiError => {
+        return (error as ApiError).message !== undefined;
     };
 
     return (
@@ -89,6 +123,15 @@ export const ApplicationManager: React.FC = () => {
                     onClose={handleCloseDelete}
                 />
             )}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

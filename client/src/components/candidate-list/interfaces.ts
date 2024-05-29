@@ -38,3 +38,13 @@ export interface CandidateEditProps {
     onEdit: (id: number, newData: Omit<Candidate, 'id'>) => void;
     onClose: () => void;
 }
+
+export interface ApiError extends Error {
+    response?: {
+        data?: {
+            message?: string;
+        };
+        status?: number;
+        [key: string]: any;
+    };
+}

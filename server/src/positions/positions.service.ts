@@ -38,6 +38,10 @@ export class PositionsService {
   async remove(id: number): Promise<void> {
     const position = await this.findOne(id);
 
+    if (!position) {
+      throw new BadRequestException(`Position with id ${id} not found`);
+    }
+
     if (position.applications && position.applications.length > 0) {
       throw new BadRequestException('Cannot delete position with applications');
     }

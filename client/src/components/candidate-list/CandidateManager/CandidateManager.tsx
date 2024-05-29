@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material';
 import { createCandidate, fetchCandidates, updateCandidate, deleteCandidate } from '../../../services/apiService';
-import { Candidate } from '../interfaces';
+import { ApiError, Candidate } from '../interfaces';
 import { CandidateForm } from '../CandidateForm/CandidateForm';
 import { CandidateList } from '../CandidateList/CandidateList';
 import { CandidateEdit } from '../CandidateEdit/CandidateEdit';
@@ -23,14 +23,20 @@ export const CandidateManager: React.FC = () => {
     });
     const [editCandidate, setEditCandidate] = useState<Candidate | null>(null);
     const [deleteCandidateData, setDeleteCandidateData] = useState<Candidate | null>(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         fetchCandidates()
             .then((data: Candidate[]) => {
                 setCandidates(data);
             })
-            .catch((error: Error) => {
-                console.error('Error fetching candidates:', error);
+            .catch((error: unknown) => {
+                if (isApiError(error)) {
+                    showError('Error: ' + (error.response?.data?.message || error.message));
+                } else {
+                    showError('Error: ' + String(error));
+                }
             });
     }, []);
 
@@ -45,8 +51,12 @@ export const CandidateManager: React.FC = () => {
                 email: '',
                 phone: ''
             });
-        } catch (error) {
-            console.error('Error creating candidate:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error: ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error: ' + String(error));
+            }
         }
     };
 
@@ -61,8 +71,12 @@ export const CandidateManager: React.FC = () => {
                     return candidate;
                 })
             );
-        } catch (error) {
-            console.error('Error updating candidate:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error: ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error: ' + String(error));
+            }
         }
     };
 
@@ -70,8 +84,12 @@ export const CandidateManager: React.FC = () => {
         try {
             await deleteCandidate(id);
             setCandidates(prevCandidates => prevCandidates.filter(candidate => candidate.id !== id));
-        } catch (error) {
-            console.error('Error deleting candidate:', error);
+        } catch (error: unknown) {
+            if (isApiError(error)) {
+                showError('Error: ' + (error.response?.data?.message || error.message));
+            } else {
+                showError('Error: ' + String(error));
+            }
         }
     };
 
@@ -89,6 +107,20 @@ export const CandidateManager: React.FC = () => {
 
     const handleCloseDelete = () => {
         setDeleteCandidateData(null);
+    };
+
+    const showError = (message: string) => {
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+        setSnackbarMessage('');
+    };
+
+    const isApiError = (error: unknown): error is ApiError => {
+        return (error as ApiError).message !== undefined;
     };
 
     return (
@@ -120,6 +152,15 @@ export const CandidateManager: React.FC = () => {
             {deleteCandidateData && (
                 <CandidateDelete candidate={deleteCandidateData} onDelete={handleDeleteCandidate} onClose={handleCloseDelete} />
             )}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };
