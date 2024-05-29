@@ -23,8 +23,8 @@ export class ApplicationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.applicationsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.applicationsService.findOne(id);
   }
 
   @Post()
@@ -34,15 +34,15 @@ export class ApplicationsController {
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateApplicationDto: UpdateApplicationDto,
   ) {
-    return this.applicationsService.update(+id, updateApplicationDto);
+    return this.applicationsService.update(id, updateApplicationDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string): Promise<void> {
-    return this.applicationsService.remove(+id);
+  remove(@Param('id') id: number): Promise<void> {
+    return this.applicationsService.remove(id);
   }
 }

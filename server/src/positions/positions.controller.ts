@@ -27,9 +27,9 @@ export class PositionsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: number) {
     try {
-      return await this.positionsService.findOne(+id);
+      return await this.positionsService.findOne(id);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
@@ -46,11 +46,11 @@ export class PositionsController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updatePositionDto: UpdatePositionDto,
   ) {
     try {
-      await this.positionsService.update(+id, updatePositionDto);
+      await this.positionsService.update(id, updatePositionDto);
       return { message: 'Position updated successfully' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -58,9 +58,9 @@ export class PositionsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: number) {
     try {
-      await this.positionsService.remove(+id);
+      await this.positionsService.remove(id);
       return { message: 'Position deleted successfully' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
